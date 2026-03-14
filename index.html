@@ -209,7 +209,34 @@
     <a href="https://wa.me/916393291132" class="whatsapp-float" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Chat" style="width:35px;">
     </a>
+<section id="super-ai" class="box-card" style="text-align: center; background: linear-gradient(145deg, #ffffff, #fff0f5); border: 3px solid var(--pink); margin: 20px; padding: 20px; border-radius: 20px;">
+    <div style="margin-bottom: 20px;">
+        <span style="background: var(--blue); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.7rem; font-weight: bold;">SUPERFEEL AI HUB 🤖</span>
+        <h2 style="color: var(--pink); margin-top: 10px;">आपकी डिजिटल सहेली ✨</h2>
+    </div>
 
+    <div id="avatar-container" style="position: relative; width: 140px; height: 140px; margin: 0 auto 25px;">
+        <img src="hero.jpeg" id="aiAvatar" style="width: 100%; height: 100%; border-radius: 50%; border: 4px solid var(--pink); object-fit: cover; position: relative; z-index: 2;">
+        <div id="pulse-ring" style="display:none; position: absolute; top:0; left:0; width:100%; height:100%; border-radius:50%; border:5px solid var(--yellow); animation: pulse 1.5s infinite; z-index: 1;"></div>
+    </div>
+
+    <div style="background: white; padding: 15px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 15px;">
+        <input type="number" id="cycleDay" placeholder="अपना दिन लिखें (1-28)" style="text-align: center; width: 100%; margin-bottom: 10px;">
+        <button onclick="checkCycle()" class="btn-3d" style="width:100%; margin:0;">चेक करें</button>
+    </div>
+
+    <p style="color: #999; font-size: 0.7rem;">— या —</p>
+
+    <button onclick="startListening()" id="micBtn" class="btn-3d" style="width:100%; background: var(--blue); border-bottom-color: #002171;">
+        मुझसे बात करें 🎙️
+    </button>
+    
+    <p id="statusTxt" style="margin-top: 20px; font-weight: bold; color: var(--blue); font-size: 0.9rem;"></p>
+
+    <div id="aiResponseBox" style="display:none; margin-top: 20px; padding: 15px; background: white; border-radius: 15px; border-left: 6px solid var(--pink); text-align: left;">
+        <p id="aiTip" style="font-size: 0.9rem; color: #333;"></p>
+    </div>
+</section>
     <script>
         // अपना असली Apps Script URL यहाँ डालें
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwMNXjg1AEfPQJG-SPhhMXIkp3YRA72FOJmPg9B8C1r_laFHKJrpl2D9as7XWNu4GzS7w/exec';
@@ -321,6 +348,77 @@
             const saved = localStorage.getItem('sf_user');
             if(saved) showDashboard(JSON.parse(saved));
         };
+       // --- SuperFeel AI Brain Starts ---
+function checkCycle() {
+    const day = document.getElementById('cycleDay').value;
+    if(!day || day < 1 || day > 28) {
+        alert("कृपया 1 से 28 के बीच कोई दिन चुनें।");
+        return;
+    }
+    processAI(`मेरा ${day} दिन है`);
+}
+function processAI(msg) {
+    let reply = "";
+    msg = msg.toLowerCase();
+    const today = new Date();
+
+    // 1. तारीख और दिन (Real-time Date)
+    if (msg.includes("तारीख") || (msg.includes("दिन") && msg.includes("आज"))) {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const dateStr = today.toLocaleDateString('hi-IN', options);
+        reply = "आज " + dateStr + " है। आशा है आपका दिन बहुत शुभ हो!";
+    } 
+    
+    // 2. मौसम का जवाब
+    else if (msg.includes("मौसम")) {
+        reply = "मौसम चाहे कैसा भी हो, सुपरफील की सुरक्षा के साथ आप हमेशा फ्रेश महसूस करेंगी। बाहर जाते समय अपना ख्याल रखें!";
+    }
+    
+    // 3. पीरियड साइकिल लॉजिक (1-28)
+    else if (msg.includes("दिन") && msg.match(/\d+/)) {
+        const d = parseInt(msg.match(/\d+/)[0]);
+        if (d <= 5) reply = "अभी आपके पीरियड्स का समय है। अदरक वाली चाय लें और आराम करें। SuperFeel XL पैड्स आपको लीकेज से बचाएंगे।";
+        else if (d <= 13) reply = "यह आपका एनर्जी फेज है! आज आप बहुत एक्टिव महसूस करेंगी। हेल्दी प्रोटीन वाला खाना लें।";
+        else if (d <= 22) reply = "आपका ग्लो फेज शुरू हो गया है। खूब पानी पियें और सुपरफील की कोमलता का आनंद लें।";
+        else reply = "पी एम एस का समय है, थोड़ा चिड़चिड़ापन हो सकता है। नमक कम खाएं और खुश रहें।";
+    }
+    
+    // 4. सामान्य बातचीत
+    else if (msg.includes("नमस्ते") || msg.includes("हेलो") || msg.includes("hi")) {
+        reply = "नमस्ते सहेली! मैं सुपरफील ए आई हूँ। आपकी क्या मदद करूँ?";
+    } else if (msg.includes("नाम")) {
+        reply = "मेरा नाम सुपरफील सहेली है, मैं आपकी सेहत की डिजिटल एक्सपर्ट हूँ।";
+    } else if (msg.includes("दर्द") || msg.includes("पेन")) {
+        reply = "पीरियड्स के दर्द में गर्म पानी की सिकाई बहुत राहत देती है। हमारे सॉफ्ट पैड्स भी आपकी बेचैनी कम करेंगे।";
+    } else {
+        reply = "माफ़ कीजिये, मैं अभी ये बात नहीं समझ पाई। आप मुझसे सेहत, फ्री सैंपल या आज की तारीख के बारे में पूछ सकती हैं।";
+    }
+
+    showResponse(reply);
+}
+
+function showResponse(text) {
+    const responseBox = document.getElementById('aiResponseBox');
+    const tipTxt = document.getElementById('aiTip');
+    if(tipTxt && responseBox) {
+        tipTxt.innerText = text;
+        responseBox.style.display = 'block';
+        responseBox.scrollIntoView({ behavior: 'smooth' });
+    }
+    speak(text);
+}
+
+function speak(text) {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'hi-IN';
+    utterance.rate = 1;
+    const avatar = document.getElementById('aiAvatar');
+    utterance.onstart = () => { if(avatar) avatar.classList.add('talking'); };
+    utterance.onend = () => { if(avatar) avatar.classList.remove('talking'); };
+    window.speechSynthesis.speak(utterance);
+}
+// --- SuperFeel AI Brain Ends --- 
     </script>
     <script defer src="/_vercel/insights/script.js"></script>
 </body>
